@@ -1,0 +1,22 @@
+# --- Secrets (never commit) ---
+.streamlit/secrets.toml
+
+# --- Large / regenerated caches (rebuild lazily at runtime) ---
+app/data/enrichment_cache.sqlite
+app/data/af_cache/
+
+# --- Python noise ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# --- OS / editor noise ---
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# --- Agent/editor config (contain symlinks into the local conda env) ---
+.agents/
+.claude/

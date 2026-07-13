@@ -1,0 +1,15 @@
+# AgeFold — Streamlit Community Cloud runtime dependencies.
+# Pinned to the versions in the local `lipms-viewer` conda env.
+streamlit==1.59.1
+pandas==2.3.3
+numpy==2.4.6
+matplotlib==3.11.0
+py3Dmol==2.4.2
+anthropic==0.116.0
+pyarrow==24.0.0
+requests==2.34.2
+biotite==1.6.0
+# Used by predictor.py (offline model training/refresh); the deployed app
+# serves predictions from a precomputed parquet, so this is not needed at
+# request time but is kept so the repo's scripts run.
+lightgbm==4.6.0
