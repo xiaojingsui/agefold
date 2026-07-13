@@ -159,12 +159,18 @@ header[data-testid="stHeader"], .stAppHeader { background:transparent !important
 [data-testid="stMain"] [data-testid="element-container"] { margin-bottom:0.1rem; }
 
 /* ---- Top navigation (rendered on every page via app_core.top_nav) ---- */
-/* Pin the nav row to the top of the viewport so it stays visible on scroll. */
-.st-key-agefold-topnav {
+/* Pin the nav to the top on scroll. `position:sticky` must sit on the wrapper
+   that is a DIRECT child of the page's main scroll stack (the keyed container
+   itself is nested inside a wrapper that scrolls away, so sticky on it fails).
+   Use :has() to select that wrapper, whatever depth Streamlit nests it at. */
+div[data-testid="stVerticalBlock"] > div:has(> .st-key-agefold-topnav),
+div[data-testid="stVerticalBlock"] > div:has(> div > .st-key-agefold-topnav) {
   position:sticky !important; top:0; z-index:999;
-  background:var(--canvas); padding-top:0.6rem;
-  /* pull to the container edges so the sticky bar spans full width */
+  background:var(--canvas);
+  padding-top:0.6rem; margin-bottom:0.2rem;
+  /* span to the container edges so the bar covers full width on scroll */
   margin-left:-2.4rem; margin-right:-2.4rem; padding-left:2.4rem; padding-right:2.4rem; }
+.st-key-agefold-topnav { background:var(--canvas); }
 .topnav-brand { display:flex; align-items:center; gap:10px; font-weight:var(--fw-bold);
   font-size:var(--fs-lg); color:var(--ink); letter-spacing:-0.02em; padding-top:6px; }
 .topnav-brand .tn-mark { display:inline-flex; align-items:center; }
