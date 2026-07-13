@@ -159,6 +159,12 @@ header[data-testid="stHeader"], .stAppHeader { background:transparent !important
 [data-testid="stMain"] [data-testid="element-container"] { margin-bottom:0.1rem; }
 
 /* ---- Top navigation (rendered on every page via app_core.top_nav) ---- */
+/* Pin the nav row to the top of the viewport so it stays visible on scroll. */
+.st-key-agefold-topnav {
+  position:sticky !important; top:0; z-index:999;
+  background:var(--canvas); padding-top:0.6rem;
+  /* pull to the container edges so the sticky bar spans full width */
+  margin-left:-2.4rem; margin-right:-2.4rem; padding-left:2.4rem; padding-right:2.4rem; }
 .topnav-brand { display:flex; align-items:center; gap:10px; font-weight:var(--fw-bold);
   font-size:var(--fs-lg); color:var(--ink); letter-spacing:-0.02em; padding-top:6px; }
 .topnav-brand .tn-mark { display:inline-flex; align-items:center; }
@@ -313,24 +319,27 @@ def top_nav(active: str = "") -> None:
     highlighting; st.page_link auto-marks the current page.
     """
     pages = st.session_state.get("_nav_pages", {})
-    # brand on the left, links on the right
-    cols = st.columns([3.0, 1, 1, 1, 1, 1])
-    with cols[0]:
-        st.markdown(
-            f"<div class='topnav-brand'><span class='tn-mark'>{_crane_svg(42)}</span>"
-            "<span>AgeFold</span></div>",
-            unsafe_allow_html=True)
-    order = [("home", "Home"), ("researcher", "Researcher"),
-             ("public", "Public"), ("discover", "Discover"), ("help", "Help")]
-    for (key, label), col in zip(order, cols[1:]):
-        with col:
-            target = pages.get(key)
-            if target is not None:
-                st.page_link(target, label=label, use_container_width=True)
-            else:
-                st.markdown(f"<div style='text-align:center;color:#94a3b8;padding:8px'>{label}</div>",
-                            unsafe_allow_html=True)
-    st.markdown("<hr class='topnav-rule'>", unsafe_allow_html=True)
+    # Wrap the whole nav row in a keyed container so it can be pinned to the top
+    # (sticky) via CSS targeting .st-key-agefold-topnav — stays visible on scroll.
+    with st.container(key="agefold-topnav"):
+        # brand on the left, links on the right
+        cols = st.columns([3.0, 1, 1, 1, 1, 1])
+        with cols[0]:
+            st.markdown(
+                f"<div class='topnav-brand'><span class='tn-mark'>{_crane_svg(42)}</span>"
+                "<span>AgeFold</span></div>",
+                unsafe_allow_html=True)
+        order = [("home", "Home"), ("researcher", "Researcher"),
+                 ("public", "Public"), ("discover", "Discover"), ("help", "Help")]
+        for (key, label), col in zip(order, cols[1:]):
+            with col:
+                target = pages.get(key)
+                if target is not None:
+                    st.page_link(target, label=label, use_container_width=True)
+                else:
+                    st.markdown(f"<div style='text-align:center;color:#94a3b8;padding:8px'>{label}</div>",
+                                unsafe_allow_html=True)
+        st.markdown("<hr class='topnav-rule'>", unsafe_allow_html=True)
 
 
 def app_header(subtitle: str, badge: str = "", title: str = "AgeFold") -> None:
