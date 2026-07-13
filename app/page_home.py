@@ -7,20 +7,8 @@ action that jumps to the relevant page. Cross-page jumps use the st.Page objects
 the shell stashes in st.session_state["_nav_pages"].
 """
 from __future__ import annotations
-import base64
-from pathlib import Path
 import streamlit as st
 import app_core
-
-
-@st.cache_data
-def _crane_data_uri() -> str:
-    """Base64-encode the origami-crane folding sequence for inline hero use."""
-    p = Path(__file__).parent / "assets" / "crane_folding_steps.png"
-    if not p.exists():
-        return ""
-    b64 = base64.b64encode(p.read_bytes()).decode("ascii")
-    return f"data:image/png;base64,{b64}"
 
 
 def _goto(key: str) -> None:
@@ -36,13 +24,8 @@ def render() -> None:
     per_res = ctx["per_res"]
 
     # ---- Hero: conversational-AI-first framing ----
-    _crane = _crane_data_uri()
-    _crane_img = (
-        f'<img class="hero-crane" src="{_crane}" '
-        'alt="Folding an origami crane, step by step">' if _crane else ""
-    )
     st.markdown(
-        f"""
+        """
 <div class="land-hero">
   <p class="eyebrow">C. elegans · structural proteomics · aging</p>
   <h1>A <span class="accent">conversational AI</span> to decode the biology of aging</h1>
@@ -50,7 +33,6 @@ def render() -> None:
   thousands of proteins change shape as an animal grows old — measured by TMT-LiP-MS across
   nine conditions and painted onto 3D AlphaFold structures. Built for experts and the
   curious public alike.</p>
-  {_crane_img}
 </div>
 """,
         unsafe_allow_html=True,

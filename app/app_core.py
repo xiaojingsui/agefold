@@ -196,9 +196,6 @@ div[data-testid="stPageLink"] a p { color:inherit !important; font-weight:var(--
 .land-hero h1 .accent { color:var(--brand); }
 .land-hero p.lede { font-size:var(--fs-md); line-height:1.65; margin:24px 0 0 0; max-width:680px;
   color:var(--muted); font-weight:var(--fw-normal); }
-.land-hero .hero-crane { position:absolute; right:44px; top:50%; transform:translateY(-50%);
-  height:82%; max-height:340px; width:auto; opacity:0.96; pointer-events:none; }
-@media (max-width:1100px) { .land-hero .hero-crane { display:none; } }
 
 /* ---- Sidebar (home for all controls/filters) ---- */
 section[data-testid="stSidebar"] { background:var(--panel2); border-right:1px solid var(--line); }
