@@ -105,8 +105,8 @@ def render() -> None:
 
     st.markdown("---")
 
-    # ---- Live chat / API key ----
-    st.markdown("## Enabling the live chat")
+    # ---- Live chat status (user-facing) ----
+    st.markdown("## The conversational chat")
     try:
         import chat_backend
         _ks = chat_backend.api_key_status()
@@ -115,19 +115,13 @@ def render() -> None:
         _has = False
     if _has:
         st.markdown("<div class='status-pill live'><span class='dot'></span>"
-                    "An Anthropic API key is detected — the conversational chat is live.</div>",
+                    "Live conversational chat is available on the Researcher and Public pages.</div>",
                     unsafe_allow_html=True)
     else:
         st.markdown("<div class='status-pill off'><span class='dot'></span>"
-                    "No API key detected — chat falls back to an offline grounded report card.</div>",
+                    "Conversational chat is currently showing an offline grounded summary.</div>",
                     unsafe_allow_html=True)
-    st.markdown(
-        "The conversational answers call the Anthropic API. To enable them, set an "
-        "`ANTHROPIC_API_KEY` environment variable, or add it to `.streamlit/secrets.toml`:"
-    )
-    st.code('ANTHROPIC_API_KEY = "sk-ant-..."', language="toml")
-    st.caption("Without a key, everything else still works — the 3D viewer, heatmaps, tracks, "
-               "tables, and an offline **report card** that summarizes the grounded context.")
+    st.caption("Either way, the 3D viewer, heatmaps, tracks, and tables are fully available.")
 
     st.markdown("---")
 
