@@ -676,6 +676,14 @@ def render(ctx: dict) -> None:
         _AHIST = "agent_history"
         if _AHIST not in st.session_state:
             st.session_state[_AHIST] = []
+        # Bind the conversation to the protein loaded in the viewer. If the user
+        # changes the protein in the sidebar, drop the previous answers (which
+        # describe the old protein) and start fresh for the new one.
+        _prev_loaded = st.session_state.get("_chat_loaded_uid")
+        if _prev_loaded is not None and _prev_loaded != uid:
+            st.session_state[_AHIST] = []
+            st.session_state["agent_focus_uid"] = uid
+        st.session_state["_chat_loaded_uid"] = uid
         if "agent_focus_uid" not in st.session_state:
             st.session_state["agent_focus_uid"] = uid
         focus_uid = st.session_state["agent_focus_uid"]

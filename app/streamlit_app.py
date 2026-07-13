@@ -59,5 +59,5 @@ st.session_state["_nav_pages"] = {
 # Native nav is hidden — each page renders its own persistent top-nav row
 # (app_core.top_nav) so Home/Researcher/Discover/Public/Help links are always visible
 # and you can jump back to Home from any page.
-_nav = st.navigation([_home, _researcher, _discover, _public, _help], position="hidden")
+_nav = st.navigation([_home, _researcher, _public, _discover, _help], position="hidden")
 _nav.run()

@@ -321,7 +321,7 @@ def top_nav(active: str = "") -> None:
             "<span>AgeFold</span></div>",
             unsafe_allow_html=True)
     order = [("home", "Home"), ("researcher", "Researcher"),
-             ("discover", "Discover"), ("public", "Public"), ("help", "Help")]
+             ("public", "Public"), ("discover", "Discover"), ("help", "Help")]
     for (key, label), col in zip(order, cols[1:]):
         with col:
             target = pages.get(key)
