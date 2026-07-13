@@ -1,9 +1,9 @@
 # AgeFold — a conversational AI to decode the biology of aging
 
-An interactive resource for the *C. elegans* TMT-LiP-MS aging dataset. This
-repository builds the **first component** of the larger project: a per-protein
-viewer that paints per-residue LiP-MS conformational signal onto AlphaFold
-structures, alongside domain, feature, and homology context.
+AgeFold is an interactive resource for the *C. elegans* TMT-LiP-MS aging
+dataset (Sui et al.). It paints per-residue LiP-MS conformational signal onto
+AlphaFold structures, adds domain, feature, and homology context, and lets
+users interrogate any protein through a grounded conversational interface.
 
 The ML feature-prediction module and the conversational chat module both
 plug into the same backend — see [`app/DATA_SCHEMA.md`](app/DATA_SCHEMA.md)
@@ -11,54 +11,51 @@ for the contract they read against.
 
 ---
 
-## Analysis workspace — multi-agent framework (default surface)
+## Navigation
 
-The app opens on a conversational **🧪 Analysis** workspace. Ask a
-structural-proteomics question in plain language; a **coordinator** routes it to
-the relevant specialists — **🧬 Structural Biologist**, **📈 Aging & Stress
-Analyst**, **🩺 Disease & Genetics**, **📊 Data Analyst** — which each reason over
-the grounded data in their lane, and their answers are **synthesized into one
-cited response** with a visible "agents consulted" trace. The Data Analyst can
-also answer **dataset-level** questions (aging-specific hits, top movers,
-structural enrichment across all proteins), not just single-protein ones.
+The app uses a persistent top navigation bar with five pages:
 
-This framework is the new **upstream entry point**; every existing surface — the
-manual viewer (Overview/Discover), ML track, variant track, structural-context
-card, and the researcher/public dual-track — is preserved and reachable. See
-[`app/AGENTS_README.md`](app/AGENTS_README.md) for the architecture, each agent's
-scope and sources, cost/latency, and how to add a specialist.
+- **Home** — an overview of what AgeFold is and what it can do.
+- **Researcher** — the full technical viewer for one protein: interactive 3D
+  AlphaFold structure, 9-condition per-residue heatmap, ML destabilization
+  track, mapped disease variants, InterPro domains, structural-context card,
+  worm→human ortholog panel, and a grounded chat with `[S1]`–`[S8]` citations.
+- **Discover** — a sortable, dataset-wide top-hits table ranking proteins by a
+  composite aging-vulnerability score.
+- **Public** — a plain-language "Explore aging" experience for a general
+  audience: a how-to-read guide plus a curated gallery of featured proteins,
+  each re-narrated as an accessible aging story, with a jargon-free chat.
+- **Help** — how to use the app and how to read the data.
 
----
+## Conversational multi-agent chat
 
-## Two doors: Researcher and Explore-aging
+The **Researcher** chat is powered by a multi-agent framework. A **coordinator**
+routes each question to the relevant specialists — **Structural Biologist**,
+**Aging & Stress Analyst**, **Disease & Genetics**, **Data Analyst** — which each
+reason over the grounded data in their lane; their answers are synthesized into
+one cited response. The Data Analyst can also answer dataset-level questions
+(aging-specific hits, top movers, structural enrichment across all proteins),
+not just single-protein ones. See
+[`app/AGENTS_README.md`](app/AGENTS_README.md) for the architecture, each
+agent's scope and sources, cost/latency, and how to add a specialist.
 
-A **View** toggle at the top of the sidebar switches the whole app between two
-audiences reading the *same* data:
-
-- **🔬 Researcher** — the full technical viewer: 9-condition per-residue heatmap,
-  ML destabilization track, mapped disease variants, InterPro domains, and chat
-  with `[S1]`–`[S7]` citations.
-- **🌍 Explore aging** — a plain-language tour for the curious public: a landing
-  page with a how-to-read guide and a curated gallery of 7 featured proteins,
-  each re-narrated as an accessible aging story (what it does, where it changes
-  with age, human-health connection, why it matters), plus a jargon-free chat.
-
-The public track is **re-narration, not dumbing-down**: identical measurements
-and retrieval context, plain language on top, every claim verified against the
-full dataset. See [`app/PUBLIC_README.md`](app/PUBLIC_README.md) for the design
-philosophy, curation criteria, and accuracy safeguards.
-
-Implementation: `public_view.py` (renderer) + `public_content.py` (curated,
-fact-checked stories) + `SYSTEM_PROMPT_PUBLIC` in `prompts.py`. The public branch
-runs then `st.stop()`s, so all researcher code is untouched.
+The **Public** chat is a single-call, plain-language assistant (the
+`SYSTEM_PROMPT_PUBLIC` prompt in `prompts.py`), reading the *same* measurements
+and retrieval context as the Researcher page — re-narration in plain language,
+not a reduced dataset, with every claim verified against the full data. See
+[`app/PUBLIC_README.md`](app/PUBLIC_README.md) for the design philosophy,
+curation criteria, and accuracy safeguards; implementation is in
+`public_view.py` (renderer), `public_content.py` (curated, fact-checked
+stories), and `SYSTEM_PROMPT_PUBLIC` in `prompts.py`.
 
 ---
 
-## What's in the box
+## Repository contents
 
 - `app/streamlit_app.py` — the app (protein page)
 - `app/enrichment.py` — cached UniProt / InterPro / HGNC lookups
-- `app/data/*.parquet` — the six unified data tables
+- `app/data/*.parquet` — the unified data tables (LiP-MS measurements,
+  structural features, predictions, variants, orthologs, and indices)
 - `app/DATA_SCHEMA.md` — full column dictionary and recipes
 - `app/README.md` — how to run the app
 
@@ -112,7 +109,7 @@ For any UniProt ID or gene symbol you type:
 The "Ask about this protein" tab lets users ask free-form questions grounded in
 UniProt, InterPro, AlphaFold, WormBase, the LiP-MS dataset, the ML predictor,
 and (as of the disease variant module) ClinVar via UniProt Variation. Every
-claim in the answer is cited to one of seven structured sources [S1]-[S7],
+claim in the answer is cited to one of eight structured sources [S1]-[S8],
 with the system prompt explicitly requiring the model to distinguish observed
 LiP-MS changes from ortholog-mapped disease variants.
 
@@ -135,8 +132,8 @@ require aging-variant overlap).
 
 **Default top-20 is dominated by known disease genes** — SOD-1 → ALS1,
 daf-18 → PTEN, cdc-48.2 → VCP-FTD-ALS, prp-31 → retinitis pigmentosa,
-rps-19 → Diamond-Blackfan, ACT-2 → hearing loss. That's the paper's central
-hypothesis made face-valid in one screen. See
+rps-19 → Diamond-Blackfan, ACT-2 → hearing loss — a direct readout of the
+project's central hypothesis in a single screen. See
 [`app/DISCOVERY_README.md`](app/DISCOVERY_README.md) for the scoring formula,
 weight defaults, and known limitations.
 
@@ -186,12 +183,3 @@ per-residue embeddings (compressed to 32 PCs). See
 [`app/MODEL_CARD.md`](app/MODEL_CARD.md) for the ablation table, calibration
 notes, and seven documented failure modes.
 
-## Build summary
-
-Four figures produced during the build (also saved as artifacts):
-
-- `data/qc_coverage.png` — dataset coverage across 9 conditions
-- `data/vit6_residue_track_qc.png` — residue-track QC on VIT-6
-- `data/app_preview_vit6_full.png` — full app protein page preview (VIT-6, day 6)
-- `data/app_preview_orthologs.png` — ortholog panel preview (HSP-1, SKN-1)
-- `data/build_summary_gallery.png` — the four combined
