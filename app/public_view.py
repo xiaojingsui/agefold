@@ -99,10 +99,7 @@ def _render_landing(ctx: dict) -> None:
     if not diagram.exists():
         diagram = Path(__file__).parent.parent / "data" / "public_howto_diagram.png"
     if diagram.exists():
-        # Center at 1/3 width so the diagram's height is ~1/3 of full-width.
-        _dl, _dc, _dr = st.columns([1, 1, 1])
-        with _dc:
-            st.image(str(diagram), use_container_width=True)
+        st.image(str(diagram), use_container_width=True)
     st.markdown(
         "Scientists measured, for **every position** along each protein, how much its shape "
         "shifts between young and old worms. Bright colors mark the parts that change the most."
