@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="app/assets/origami_crane.svg" alt="AgeFold origami crane logo" width="120">
+  <img src="app/assets/crane_folding_steps.png" alt="Folding an origami crane, step by step — the AgeFold motif" width="360">
 </p>
 
 # AgeFold — a conversational AI to decode the biology of aging
