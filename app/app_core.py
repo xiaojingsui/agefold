@@ -91,6 +91,9 @@ _THEME_CSS = """
    The blue->red per-residue data colormap is intentionally NOT themed.
    ========================================================================= */
 :root {
+  /* Force light rendering of native form controls regardless of the viewer's
+     OS dark/light setting — keeps inputs/dropdowns light on a dark-mode Mac. */
+  color-scheme: light;
   /* Type scale (rem ladder — the ONLY font sizes used) */
   --fs-xs:0.75rem; --fs-sm:0.875rem; --fs-base:1rem; --fs-md:1.125rem;
   --fs-lg:1.25rem; --fs-xl:1.5rem; --fs-2xl:1.875rem; --fs-3xl:2.25rem; --fs-hero:3rem;
@@ -112,6 +115,7 @@ _THEME_CSS = """
   --shadow-lg:0 8px 28px rgba(17,24,39,0.07);
 }
 /* ---- Base typography ---- */
+html, body { color-scheme: light; }
 html, body, [class*="css"], .stApp, .stMarkdown, p, span, div, label, input, textarea, select, button {
   font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif !important;
   -webkit-font-smoothing:antialiased;
