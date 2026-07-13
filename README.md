@@ -1,4 +1,4 @@
-# LiP-MS Aging Structure Viewer — v0 build
+# AgeFold — a conversational AI to decode the biology of aging
 
 An interactive resource for the *C. elegans* TMT-LiP-MS aging dataset. This
 repository builds the **first component** of the larger project: a per-protein
