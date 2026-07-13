@@ -126,6 +126,12 @@ html, body, [class*="css"], .stApp, .stMarkdown, p, span, div, label, input, tex
 [data-testid="stExpanderIcon"],
 summary [data-testid="stIconMaterial"],
 details summary span[data-testid="stExpanderIcon"] { display:none !important; }
+/* The same Inter override makes chat-message avatars render their raw icon
+   ligature ("face", "smart_toy") instead of the glyph. Hide the avatars — the
+   message bubbles read fine without them. */
+[data-testid="stChatMessageAvatarUser"],
+[data-testid="stChatMessageAvatarAssistant"],
+[data-testid="stChatMessageAvatarCustom"] { display:none !important; }
 body, p, .stMarkdown, .stMarkdown p { color:var(--ink2); font-size:var(--fs-base); line-height:1.65; }
 h1,h2,h3,h4,h5 { font-family:'Inter',system-ui,sans-serif !important; color:var(--ink);
   letter-spacing:-0.02em; line-height:1.25; margin:0.3rem 0; }
