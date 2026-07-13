@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="app/assets/origami_crane.svg" alt="AgeFold origami crane logo" width="120">
+</p>
+
 # AgeFold — a conversational AI to decode the biology of aging
 
 AgeFold is an interactive resource for the *C. elegans* TMT-LiP-MS aging
